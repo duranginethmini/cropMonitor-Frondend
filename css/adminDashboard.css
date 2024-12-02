@@ -10,7 +10,7 @@ body {
     background-color: #d1fcd7;
     color: #090909;
     height: 100vh;
-    width: 250px;
+    width: 200px; /* Reduced width */
     position: fixed;
     top: 0;
     left: 0;
@@ -65,10 +65,12 @@ body {
 }
 /* Main container styling */
 .main-container {
-    margin-left: 250px; /* Sidebar width */
+    margin-left: 200px; /* Adjust for reduced sidebar width */
+    max-width: 1200px; /* Limit main content width */
+    margin-right: auto;
+    margin-left: auto; /* Center-align horizontally */
     padding: 20px;
 }
-
 /* Main content styles */
 .main-content {
     display: flex;
@@ -88,15 +90,19 @@ body {
 
 /* Individual card styles */
 .card {
-    color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #69ce74; /* Set the background */
+    color: white; /* Text color */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
     padding: 20px;
-    text-align: center;
-    height: 130px;
     width: 250px;
-    
+    height: 150px; /* Adjust height */
+    text-align: center; /* Center-align text */
+    display: flex;
+    flex-direction: column; /* Stack title and value */
+    justify-content: center; /* Center items vertically */
 }
+
 
 /* Different card colors */
 #staffCard {
@@ -157,6 +163,9 @@ color: #343a40;
 .chart-legend span {
 display: flex;
 align-items: center;
+}
+.row {
+    margin-bottom: 20px; /* Reduce vertical spacing between rows */
 }
 
 .chart-legend span div {

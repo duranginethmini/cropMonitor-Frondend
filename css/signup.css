@@ -4,7 +4,7 @@ body {
     display: flex;
     height: 100vh;
     /* background-color: #bbfab8; */
-    background-image: url('/img/siginup2.jpg');
+    background-image: url('../imgs/siginup2.jpg');
 }
 
 .container {

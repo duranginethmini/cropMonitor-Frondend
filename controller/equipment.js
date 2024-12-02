@@ -1,69 +1,165 @@
-let selectedRow = null;
+let selectedEquipmentId = null;
 
-// Save Equipment function
-function saveEquipment() {
-    const equipmentData = getFormData();
-    if (equipmentData && selectedRow === null) {
-        const newRow = `
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>${equipmentData.equipmentCode}</td>
-                <td>${equipmentData.equipmentName}</td>
-                <td>${equipmentData.type}</td>
-                <td>${equipmentData.manufacturer}</td>
-                <td>${equipmentData.purchaseDate}</td>
-                <td>${equipmentData.details}</td>
-                <td>${equipmentData.image}</td>
-                <td>
-                    <button class="btn btn-warning btn-sm" onclick="editEquipment(this)">Edit</button>
-                    <button class="btn btn-danger btn-sm" onclick="removeEquipment(this)">Delete</button>
-                </td>
-            </tr>
-        `;
-        $('table tbody').append(newRow);
-        resetForm();
-        $('#addEquipmentModal').modal('hide');
-    } else {
-        alert("Please fill in all fields or use Update for existing entries.");
-    }
+function getJwtToken() {
+    return localStorage.getItem('token');
 }
-
-// Other functions: updateEquipment(), deleteEquipment(), getAllEquipment(), editEquipment()
-// Use a similar pattern to crop.js but replace field names accordingly.
 
 function getFormData() {
     return {
         equipmentCode: $('#equipmentCode').val(),
         equipmentName: $('#equipmentName').val(),
-        type: $('#type').val(),
-        manufacturer: $('#manufacturer').val(),
-        purchaseDate: $('#purchaseDate').val(),
-        details: $('#details').val(),
-        image: $('#equipmentImage').val().split('\\').pop()
+        status: $('#status').val(),
+        type: $('#type').val()
     };
 }
 
 function resetForm() {
     $('#equipmentForm')[0].reset();
-    selectedRow = null;
+    selectedEquipmentId = null; // Reset selected ID
 }
-function search() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const table = document.getElementById('cropTable');
-    const rows = table.getElementsByTagName('tr');
 
-    for (let i = 1; i < rows.length; i++) {
-        const cells = rows[i].getElementsByTagName('td');
-        let match = false;
-
-        for (let j = 0; j < cells.length; j++) {
-            if (cells[j].textContent.toLowerCase().includes(searchInput)) {
-                match = true;
-                break;
-            }
-        }
-
-        rows[i].style.display = match ? '' : 'none';
+function validateFormData(data) {
+    if (!data.equipmentCode || !data.equipmentName || !data.status || !data.type) {
+        alert("All fields are required.");
+        return false;
     }
+    return true;
 }
 
+function saveEquipment() {
+    const equipmentData = getFormData();
+    if (!validateFormData(equipmentData)) return;
+
+    apiRequest(
+        "http://localhost:5050/cropMonitor/api/v1/equipment",
+        "POST",
+        equipmentData,
+        function () {
+            alert("Equipment added successfully.");
+            resetForm();
+            getAllEquipment();
+            $('#addEquipmentModal').modal('hide');
+        },
+        function (xhr) {
+            alert(`Error adding equipment: ${xhr.responseText}`);
+        }
+    );
+}
+
+function updateEquipment() {
+    const equipmentData = getFormData();
+    if (!validateFormData(equipmentData)) return;
+
+    apiRequest(
+        `http://localhost:5050/cropMonitor/api/v1/equipment/${equipmentData.equipmentCode}`,
+        "PATCH",
+        equipmentData,
+        function () {
+            alert("Equipment updated successfully.");
+            resetForm();
+            getAllEquipment();
+            $('#addEquipmentModal').modal('hide');
+        },
+        function (xhr) {
+            alert(`Error updating equipment: ${xhr.responseText}`);
+        }
+    );
+}
+
+function getAllEquipment() {
+    apiRequest(
+        "http://localhost:5050/cropMonitor/api/v1/equipment",
+        "GET",
+        null,
+        function (response) {
+            const tbody = $('.tBody');
+            tbody.empty();
+            response.forEach(equipment => {
+                const row = `
+                    <tr data-id="${equipment.id}">
+                        <td><input type="checkbox"></td>
+                        <td>${equipment.equipmentCode}</td>
+                        <td>${equipment.equipmentName}</td>
+                        <td>${equipment.status}</td>
+                        <td>${equipment.type}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openModalForEdit(${equipment.id})">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteEquipment(${equipment.id})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+                tbody.append(row);
+            });
+        },
+        function (xhr) {
+            alert(`Failed to fetch equipment: ${xhr.responseText}`);
+        }
+    );
+}
+
+function deleteEquipment(id) {
+   
+    console.log("Deleting equipment with id: " + id);  // Debugging log
+    $.ajax({
+        url: `http://localhost:5050/cropMonitor/api/v1/equipment/${id}`,
+        type: 'DELETE',
+        success: function(response) {
+            console.log("Equipment deleted successfully");
+        },
+        error: function(xhr, status, error) {
+            console.log("Error: " + error);
+        }
+    });
+}
+
+function openModalForEdit(id) {
+    apiRequest(
+        `http://localhost:5050/cropMonitor/api/v1/equipment/${id}`,
+        "GET",
+        null,
+        function (response) {
+            $('#equipmentCode').val(response.equipmentCode);
+            $('#equipmentName').val(response.equipmentName);
+            $('#status').val(response.status);
+            $('#type').val(response.type);
+
+            selectedEquipmentId = id;
+            $('#addEquipmentModal').modal('show');
+        },
+        function (xhr) {
+            alert(`Failed to fetch equipment details: ${xhr.responseText}`);
+        }
+    );
+}
+
+function apiRequest(url, method, data, successCallback, errorCallback) {
+    const token = getJwtToken();
+    if (!token) {
+        alert("JWT token missing or invalid.");
+        return;
+    }
+
+    $.ajax({
+        url: url,
+        method: method,
+        contentType: "application/json",
+        headers: { Authorization: `Bearer ${token}` },
+        data: JSON.stringify(data),
+        success: successCallback,
+        error: errorCallback
+    });
+}
+
+$(document).ready(function () {
+    getAllEquipment();
+
+    $('#addEquipmentModal').on('show.bs.modal', function () {
+        if (selectedEquipmentId) {
+            $('.btn-primary').hide();
+            $('.btn-info').show();
+        } else {
+            $('.btn-primary').show();
+            $('.btn-info').hide();
+        }
+    });
+});
