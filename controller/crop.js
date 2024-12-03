@@ -96,15 +96,14 @@ function editCrop(button) {
 
 // Collect form data
 function getFormData() {
-    return {
-        cropCode: $('#cropCode').val(),
-        commonName: $('#commonName').val(),
-        scientificName: $('#scientificName').val(),
-        category: $('#category').val(),
-        season: $('#season').val(),
-        fieldDetails: $('#fieldDetails').val(),
-        imageFile: $('#cropImage').val().split('\\').pop()
-    };
+    formData.append('fieldCode', $('#fieldCode').val());
+    formData.append('fieldName', $('#fieldName').val());
+    formData.append('fieldSize', parseFloat($('#fieldSize').val()));
+    formData.append('latitude', parseFloat($('#latitude').val()));
+    formData.append('longitude', parseFloat($('#longitude').val()));
+    formData.append('fieldImage1', $('#fieldImage1')[0].files[0]); // Appending file
+    formData.append('fieldImage2', $('#fieldImage2')[0].files[0]);
+    formData.append('equipmentCode', $('#equipmentCode').val());
 }
 
 // Reset form

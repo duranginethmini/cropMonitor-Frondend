@@ -49,9 +49,10 @@ function saveEquipment() {
 function updateEquipment() {
     const equipmentData = getFormData();
     if (!validateFormData(equipmentData)) return;
+    const equipmentId = $('#equipmentId').val(); 
 
     apiRequest(
-        `http://localhost:5050/cropMonitor/api/v1/equipment/${equipmentData.equipmentCode}`,
+        `http://localhost:5050/cropMonitor/api/v1/equipment/${equipmentId}`,
         "PATCH",
         equipmentData,
         function () {
