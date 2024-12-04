@@ -15,7 +15,7 @@
         <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 bg-light sidebar">
             <div class="profile-section text-center mt-4">
-                <img src="../imgs/profileimg.jpg" alt="Profile Picture" class="rounded-circle" width="60">
+                <img src="../imgs/profilepic.png" alt="Profile Picture" class="rounded-circle" width="60">
                 <h5>Imakshi</h5>
                 <p>Manager</p>
             </div>
@@ -35,9 +35,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="../pages/vehicle.html">Vehicle</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="../pages/staff.html">Staff</a>
-                </li>
+              
                 <li class="nav-item">
                     <a class="nav-link" href="#">Logout</a>
                 </li>
@@ -50,7 +48,10 @@
 
             <!-- Search Bar and Add Button -->
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <input type="text" class="form-control w-50" placeholder="Search Staff">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search staff...">
+                    <button onclick="search()">Search</button>
+                </div>
                 <button class="btn btn-success" data-toggle="modal" data-target="#addStaffModal">Add Staff</button>
             </div>
 
@@ -70,6 +71,8 @@
                     <th>Email</th>
                     <th>Equipment Code</th>
                     <th>Vehicle Code</th>
+                    <th>Address</th>
+                    <th>Postal code</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -139,28 +142,16 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="buildingNo">buildingNo</label>
-                            <input type="text" class="form-control" id="buildingNo" placeholder="Enter Build Number">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="city">City</label>
-                            <input type="text" class="form-control" id="city" placeholder="Enter City">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="lane">Lane</label>
-                            <input type="text" class="form-control" id="lane" placeholder="Enter Lane">
+                            <label for="address">address</label>
+                            <input type="text" class="form-control" id="address" placeholder="Enter address">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="postalCode">postal Code</label>
                             <input type="text" class="form-control" id="postalCode" placeholder="Postal Code">
                         </div>
-                        <div class="form-group col-md-6">
-                            <label for="state">State</label>
-                            <input type="text" class="form-control" id="state" placeholder="State">
-                        </div>
                     </div>
+                        
+                    
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="email">Email</label>

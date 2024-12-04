@@ -20,7 +20,7 @@ function saveCrop() {
         formData.append('fieldCode', cropData.fieldCode);
 
         // Append image files if available
-        const imageFile = $('#image')[0].files[0];
+        const imageFile = $('#cropImage')[0].files[0];  // Corrected id here
         if (imageFile) formData.append('image', imageFile);
 
         $.ajax({
@@ -39,6 +39,7 @@ function saveCrop() {
             }
         });
     }
+
 }
 
 // Update existing crop
@@ -58,7 +59,7 @@ function updateCrop() {
         formData.append('fieldCode', cropData.fieldCode);
 
         // Append image files if available
-        const imageFile = $('#image')[0].files[0];
+        const imageFile = $('#cropImage')[0].files[0];  // Corrected id here
         if (imageFile) formData.append('image', imageFile);
 
         $.ajax({

@@ -7,7 +7,7 @@ $(document).ready(function () {
     const registerBtn = document.getElementById("register-btn");
     if (registerBtn) {
         registerBtn.addEventListener("click", function () {
-            window.location.href = "../pages/signup.html";
+            window.location.href = "/pages/signup.html";
         });
     }
 });
@@ -33,13 +33,19 @@ function userLogin() {
         }),
         success: function (response) {
             if (response && response.token) {
-                // Store the token in localStorage
-                // localStorage.setItem("token", response.token);
                 localStorage.setItem('jwtToken', response.token);
-                console.log("JWT token saved:", response.token);  // Debug log
+                console.log("JWT token saved:", response.token);
 
-                alert("Login successful!");
-                window.location.href = "../pages/managerDashboard.html";
+                // Redirect based on role
+                if (role === "ADMINISTRATIVE") {
+                    window.location.href = "../pages/adminDashboard.html";
+                } else if (role === "MANAGER") {
+                    window.location.href = "../pages/managerDashboard.html";
+                } else if (role === "SCIENTIST") {
+                    window.location.href = "../pages/scientistDashboard.html";
+                } else {
+                    alert("Invalid role selected.");
+                }
             } else {
                 alert("Invalid server response.");
             }

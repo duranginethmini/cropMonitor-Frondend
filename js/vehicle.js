@@ -1,3 +1,7 @@
+$(document).ready(function() {
+    // When the page loads, fetch all equipment data
+    getAllVehicles();
+});
 let selectedRow = null;
 
 // Save JWT token to localStorage after successful login
@@ -71,23 +75,24 @@ function updateVehicle() {
 }
 
 // Delete Vehicle
-function deleteVehicle() {
-    const row = $(button).closest('tr');
-    const vehicleCode = row.find("td:eq(1)").text();
+function deleteVehicle(button) {
+    const row = $(button).closest('tr');  // Use 'button' passed as an argument
+    const vehicleCode = row.find("td:eq(1)").text();  // Assuming the vehicle code is in the second column (index 1)
+    
     if (vehicleCode) {
         $.ajax({
             url: `http://localhost:5050/cropMonitor/api/v1/vehicles/${vehicleCode}`,
             type: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${getJwtToken()}`,
+                'Authorization': `Bearer ${getJwtToken()}`,  // Make sure the token is correct
                 'Content-Type': 'application/json'
             },
             success: function () {
                 alert("Vehicle deleted successfully!");
-                row.remove();
+                row.remove();  // Remove the row from the table after successful deletion
             },
             error: function (error) {
-                alert("Error deleting vehicle: " + error.responseText);
+                alert("Error deleting vehicle: " + error.responseText);  // Log any error response
             }
         });
     } else {

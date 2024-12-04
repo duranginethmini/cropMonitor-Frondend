@@ -8,9 +8,7 @@
     <link rel="stylesheet" href="../css/crop.css">
     <link rel="stylesheet" href="../css/main.css">
     <style>
-        body{
-            background-image: url('../imgs/paddy.jpg');
-        }
+        
         
     </style>
 </head>
@@ -21,7 +19,7 @@
         <!-- Sidebar -->
         <div class="col-md-3 col-lg-2 bg-light sidebar">
             <div class="profile-section text-center mt-4">
-                <img src="../imgs/profileimg.jpg" alt="Profile Picture" class="rounded-circle" width="60">
+                <img src="../imgs/profilepic.png" alt="Profile Picture" class="rounded-circle" width="60">
                 <h5>Imakshi</h5>
                 <p>Manager</p>
             </div>
@@ -32,11 +30,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="../pages/field.html">Field Data</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="../pages/crop.html">Crops</a>
-                </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../pages//equipment.html">Equipment</a>
+                    <a class="nav-link" href="../pages/equipment.html">Equipment</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="../pages/vehicle.html">Vehicle</a>
@@ -45,18 +40,21 @@
                     <a class="nav-link" href="../pages/staff.html">Staff</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Logout</a>
+                    <a class="nav-link" href="../pages/index.html">Logout</a>
                 </li>
             </ul>
         </div>
 
         <!-- Main Content -->
         <div class="col-md-9 col-lg-10 main-content">
-            <h1 class="my-4 text-center">Crop Management</h1>
+            <h1 class="my-4 text-center" style="font-weight: bold;">Crop Management</h1>
 
             <!-- Search Bar and Add Button -->
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <input type="text" class="form-control w-50" placeholder="Search Crop">
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search by crop name...">
+                    <button onclick="search()">Search</button>
+                </div>
                 <button class="btn btn-success" data-toggle="modal" data-target="#addCropModal">Add Crop</button>
             </div>
 
@@ -128,10 +126,6 @@
                     <div class="form-group col-md-6">
                         <label for="cropImage">Image</label>
                         <input type="file" class="form-control-file" id="cropImage">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="logCode">Log Code</label>
-                        <input type="text" class="form-control" id="logCode" placeholder="Enter Log Code">
                     </div>
                 </div>
                 </form>

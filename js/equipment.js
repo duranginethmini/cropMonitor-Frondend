@@ -1,3 +1,8 @@
+$(document).ready(function() {
+    // When the page loads, fetch all equipment data
+    getAllEquipment();
+});
+
 // Save JWT token to localStorage after successful login
 function storeJwtToken(token) {
     localStorage.setItem('jwtToken', token);  
@@ -191,6 +196,10 @@ function search() {
                         <td>${equipment.equipmentName}</td>
                         <td>${equipment.status}</td>
                         <td>${equipment.type}</td>
+                         <td>
+                        <button class="btn btn-warning btn-sm" onclick="editCrop('${equipment.equipmentCode}')">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteCrop('${equipment.equipmentCode}')">Delete</button>
+                    </td>
                     </tr>`;
                 });
                 $('.tBody').html(tableBody);
